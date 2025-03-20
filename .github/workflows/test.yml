@@ -39,6 +39,6 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           # Thêm cả file gộp (ví dụ: aqi_all_cities_2025.csv) vào commit
-          git add result/* aqi_all_cities_2025.csv
+          git add result/* aqi_selected_cities.csv
           git diff --staged --quiet || git commit -m "chore: update AQI data and merged CSV [skip ci]"
           git push origin main

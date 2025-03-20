@@ -1,5 +1,4 @@
 playwright==1.41.0
 python-dotenv==1.0.0
-pip uninstall numpy pandas -y
-pip install numpy==1.24.3
-pip install pandas==2.0.2
+numpy==1.24.3
+pandas==2.0.2

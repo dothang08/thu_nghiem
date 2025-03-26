@@ -9,8 +9,32 @@ st.markdown('Ứng dụng tương tác hiển thị dữ liệu AQI và các y�
 # Load data
 @st.cache_data
 def load_data():
-    data = pd.read_csv('Test3.csv', parse_dates=['timestamp'])
+    data = pd.read_csv('aqi_selected_cities.csv', parse_dates=['timestamp'])
     data['timestamp'] = pd.to_datetime(data['timestamp'])
+
+    ## Tiền xử lý dữ liệu
+    # Chuyển cột temperature sang kiểu string, loại bỏ "°C" và chuyển về kiểu số float
+    data['temperature'] = data['temperature'].astype(str).str.replace('°C', '', regex=False)
+    data['temperature'] = pd.to_numeric(data['temperature'], errors='coerce')
+
+    # Tương tự với cột humidity (nếu chứa dấu "%")
+    data['humidity'] = data['humidity'].astype(str).str.replace('%', '', regex=False)
+    data['humidity'] = pd.to_numeric(data['humidity'], errors='coerce')
+
+    # Tương tự với cột wind_speed " km/h"
+    data['wind_speed'] = data['wind_speed'].astype(str).str.replace(' km/h', '', regex=False)
+    data['wind_speed'] = pd.to_numeric(data['wind_speed'], errors='coerce')
+
+    # Chuyển đổi đơn vị CO cho dữ liệu trước ngày 2025-03-07
+    data.loc[(data["city"] == "Hà Nội") & (data["timestamp"] <= "2025-03-07"), "co"] = (
+    data["co"] / 1145).round(1)
+
+    ## Xử lý dữ liệu thiếu
+    # Điền giá trị NaN bằng trung bình của từng cột
+    cols_to_fill = ["so2", "co", "pm10", "o3", "no2", "pm25"]
+    for col in cols_to_fill:
+        data[col] = data[col].fillna(data.groupby("city")[col].transform("mean")).round(1)
+
     return data
 
 df = load_data()
@@ -40,6 +64,7 @@ st.plotly_chart(fig_pollutant)
 # Tương quan giữa AQI và yếu tố thời tiết
 st.header('🔍 Tương quan AQI và yếu tố thời tiết')
 y_factor = st.selectbox('Chọn yếu tố thời tiết:', ['temperature', 'humidity', 'wind_speed'])
+
 fig_corr = px.scatter(
     filtered_df, 
     x=y_factor, 
@@ -56,7 +81,16 @@ st.plotly_chart(fig_corr)
 
 # Hiển thị dữ liệu thô
 st.header('📋 Bảng dữ liệu chi tiết')
-st.dataframe(filtered_df)
+
+# Ẩn cột icon nếu tồn tại
+if 'icon' in filtered_df.columns:
+    display_df = filtered_df.drop(columns='icon')
+else:
+    display_df = filtered_df
+
+# Hiển thị bảng sau xử lý
+st.dataframe(display_df.reset_index(drop=True), use_container_width=True)
+
 
 # Footer
 st.markdown('---')

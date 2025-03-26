@@ -564,3 +564,4 @@ timestamp,city,aqi,weather_icon,wind_speed,humidity,temperature,pm25,pm10,o3,no2
 2025-03-26T22:22:08.928866+07:00,Bắc Ninh,155,/dl/web/weather/ic-w-04-scattered-clouds-full.svg,17.1 km/h,81%,22.8°C,61.0,N/A,N/A,N/A,N/A,N/A
 2025-03-26T23:25:52.555451+07:00,Bắc Ninh,151,/dl/web/weather/ic-w-04-scattered-clouds-full.svg,15.6 km/h,82%,22.8°C,56.0,N/A,N/A,N/A,N/A,N/A
 2025-03-27T00:18:15.609409+07:00,Bắc Ninh,151,/dl/web/weather/ic-w-04-scattered-clouds-full.svg,15.8 km/h,84%,22.8°C,56.0,N/A,N/A,N/A,N/A,N/A
+2025-03-27T01:27:34.166478+07:00,Bắc Ninh,132,/dl/web/weather/ic-w-04-scattered-clouds-full.svg,15.4 km/h,86%,22.2°C,48.0,N/A,N/A,N/A,N/A,N/A
